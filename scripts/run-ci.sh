@@ -18,7 +18,9 @@
 # under the License.
 #
 
-set -e -x
+set -e -x -u
+
+export GOPROXY=https://goproxy.cn,direct
 
 export GOPATH=/
 
@@ -31,7 +33,9 @@ go build -o bin/pulsar-perf ./perf
 
 scripts/pulsar-test-service-start.sh
 
-go test -race -coverprofile=/tmp/coverage -timeout=20m -v ./...
+#go test -race -coverprofile=/tmp/coverage -timeout=20m -v ./...
+#-race is not supported on linux/loong64
+go test -coverprofile=/tmp/coverage -timeout=20m -v ./...
 go tool cover -html=/tmp/coverage -o coverage.html
 
 scripts/pulsar-test-service-stop.sh

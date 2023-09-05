@@ -19,13 +19,23 @@
 
 # Explicit version of Pulsar and Golang images should be
 # set via the Makefile or CLI
-ARG PULSAR_IMAGE=apachepulsar/pulsar:latest
-ARG GOLANG_IMAGE=golang:latest
+ARG PULSAR_IMAGE=cr.loongnix.cn/library/pulsar:3.0.0
+ARG GOLANG_IMAGE=cr.loongnix.cn/library/golang:1.20
 
 FROM $PULSAR_IMAGE as pulsar
 FROM $GOLANG_IMAGE
 
-RUN apt-get update && apt-get install -y openjdk-17-jre ca-certificates
+RUN apt-get update && apt-get install -y ca-certificates
+
+RUN wget -O jdk-17.0.3.tar.gz http://ftp.loongnix.cn/Java/openjdk17/loongson17.2.0-jdk17.0.3_7-linux-loongarch64.tar.gz \
+    && tar -zxvf jdk-17.0.3.tar.gz  \ 
+    && mv jdk-17.0.3 /usr/local/
+    #&& mv jdk-* jdk-17.0.3 
+
+ENV JAVA_HOME /usr/local/jdk-17.0.3
+
+ENV PATH $JAVA_HOME/bin:$PATH 
+
 
 COPY --from=pulsar /pulsar /pulsar
 

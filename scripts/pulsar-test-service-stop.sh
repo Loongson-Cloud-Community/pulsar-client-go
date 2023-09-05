@@ -23,7 +23,7 @@ set -e
 SRC_DIR=$(git rev-parse --show-toplevel)
 cd $SRC_DIR
 
-IMAGE_NAME=pulsar-client-go-test:latest
+IMAGE_NAME=cr.loongnix.cn/library/pulsar-client-go-test:1.11.1
 
 if [[ -f /.dockerenv ]]; then
     # When running tests inside docker

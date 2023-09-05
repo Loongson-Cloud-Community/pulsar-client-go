@@ -17,11 +17,11 @@
 # under the License.
 #
 
-IMAGE_NAME = pulsar-client-go-test:latest
-PULSAR_VERSION ?= 2.10.3
-PULSAR_IMAGE = apachepulsar/pulsar:$(PULSAR_VERSION)
-GO_VERSION ?= 1.18
-GOLANG_IMAGE = golang:$(GO_VERSION)
+IMAGE_NAME = cr.loongnix.cn/library/pulsar-client-go-test:1.11.1
+PULSAR_VERSION ?= 3.0.0
+PULSAR_IMAGE = cr.loongnix.cn/library/pulsar:$(PULSAR_VERSION)
+GO_VERSION ?= 1.20
+GOLANG_IMAGE = cr.loongnix.cn/library/golang:$(GO_VERSION)
 
 # Golang standard bin directory.
 GOPATH ?= $(shell go env GOPATH)
@@ -38,7 +38,7 @@ bin/golangci-lint:
 	GOBIN=$(shell pwd)/bin go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.51.2
 
 container:
-	docker build -t ${IMAGE_NAME} --build-arg GOLANG_IMAGE="${GOLANG_IMAGE}" \
+	docker build -t ${IMAGE_NAME} --build-arg GOLANG_IMAGE="$(GOLANG_IMAGE)" \
 	    --build-arg PULSAR_IMAGE="${PULSAR_IMAGE}" .
 
 test: container
